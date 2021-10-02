@@ -1,0 +1,12 @@
+@import 'app.scss';
+
+.header {
+  @apply bg-gray-100 text-white z-50 shadow-md;
+
+  h1 {
+    @apply font-extrabold text-gray-900 text-xl;
+  }
+  div {
+    @apply p-5
+  }
+}
