@@ -20,6 +20,7 @@
     "@mhauri/tier-api-client": "0.1.1",
     "autoprefixer": "^10.3.4",
     "leaflet": "^1.7.1",
+    "moment": "^2.29.1",
     "next": "^11.1",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.8.1",

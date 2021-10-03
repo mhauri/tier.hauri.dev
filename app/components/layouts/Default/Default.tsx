@@ -10,7 +10,6 @@ const Default = ({children}: Props) => (
     <>
         <Header/>
         <main className={styles.main}>{children}</main>
-        <Footer/>
     </>
 );
 

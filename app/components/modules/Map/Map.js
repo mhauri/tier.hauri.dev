@@ -18,7 +18,9 @@ const Map = ({ children, className, ...rest }) => {
     delete L.Icon.Default.prototype._getIconUrl;
 
     L.Icon.Default.mergeOptions({
-
+      iconRetinaUrl: './images/tier-active-2x.png',
+      iconUrl: './images/tier-active-2x.png',
+      shadowUrl: './images/marker-shadow.png',
     });
   }, []);
 
