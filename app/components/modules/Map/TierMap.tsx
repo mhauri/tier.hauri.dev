@@ -12,7 +12,7 @@ const TierMap = ({zoneId}) => {
     const zoneApi = new ZoneApi(Client);
     const noParking = {color: 'red'}
     const speedReduction = {color: 'gray', fillColor: 'orange'}
-    const noColor = {color: 'white'}
+    const noColor = {color: 'transparent'}
 
     const listVehicles = async function () {
         vehicleApi.listVehicle(zoneId, function (error, data): void {
@@ -50,12 +50,16 @@ const TierMap = ({zoneId}) => {
                     />
                     {markers.map((vehicle, idx) =>
                         <Marker key={`marker-${idx}`}
-                                position={[vehicle.attributes.latitude, vehicle.attributes.longitude]}>
+                                position={[vehicle.attributes.latitude, vehicle.attributes.longitude]} opacity={vehicle.attributes.state === 'ACTIVE' ? 0.95 : 0.4}>
                             <Popup>
                                 <table>
                                     <tr>
                                         <td><strong>Tier Code:</strong></td>
                                         <td>{vehicle.attributes.code}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Status:</strong></td>
+                                        <td>{vehicle.attributes.state}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Batterie:</strong></td>
