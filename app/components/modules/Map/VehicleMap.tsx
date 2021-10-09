@@ -1,27 +1,18 @@
-import React, {useEffect, useState} from "react"
-import Link from 'next/link'
+import React, {useState} from "react"
 import styles from '@module/Map/Map.module.css';
 import Map from '@module/Map/index'
 import {Client} from '@util/Client';
-import {VehicleApi, ZoneApi} from '@mhauri/tier-api-client';
+import {ZoneApi} from '@mhauri/tier-api-client';
 
-const TierMap = ({zoneId}) => {
-    const [markers, setMarkers] = useState([]);
+const VehicleMap = ({markers}) => {
     const [zones, setZones] = useState([]);
     const [center, setCenter] = useState([]);
-    const vehicleApi = new VehicleApi(Client);
     const zoneApi = new ZoneApi(Client);
     const noParking = {color: 'red'}
     const speedReduction = {color: 'gray', fillColor: 'orange'}
     const noColor = {color: 'transparent'}
+    const zoneId = markers[0].zoneId;
 
-    const listVehicles = async function () {
-        vehicleApi.listVehicle(zoneId, function (error, data): void {
-            if (!error) {
-                setMarkers(data);
-            }
-        });
-    }
 
     const listZones = async function () {
         zoneApi.listZone(zoneId, function (error, data): void {
@@ -34,11 +25,10 @@ const TierMap = ({zoneId}) => {
 
     if (center.length === 0) {
         listZones();
-        listVehicles();
         return (<></>)
     }
     return (
-        <Map className={styles.map} center={center} zoom={14}>
+        <Map className={styles.map} center={center} zoom={13}>
             {({TileLayer, Marker, Popup, Polygon}) => (
                 <>
                     <TileLayer
@@ -47,39 +37,34 @@ const TierMap = ({zoneId}) => {
                     />
                     {markers.map((vehicle, idx) =>
                         <Marker key={`marker-${idx}`}
-                                position={[vehicle.attributes.latitude, vehicle.attributes.longitude]}
-                                opacity={vehicle.attributes.state === 'ACTIVE' ? 0.95 : 0.4}>
+                                position={[vehicle.latitude, vehicle.longitude]}
+                                opacity={vehicle.state === 'ACTIVE' ? 0.95 : 0.4}>
                             <Popup>
                                 <table>
                                     <tr>
                                         <td><strong>Tier Code:</strong></td>
-                                        <td>{vehicle.attributes.code}</td>
+                                        <td>{vehicle.code}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Status:</strong></td>
-                                        <td>{vehicle.attributes.state}</td>
+                                        <td>{vehicle.state}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Batterie:</strong></td>
-                                        <td>{vehicle.attributes.batteryLevel}%</td>
+                                        <td>{vehicle.batteryLevel}%</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Max:</strong></td>
-                                        <td>{vehicle.attributes.maxSpeed} km/h</td>
+                                        <td>{vehicle.maxSpeed} km/h</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Helmbox:</strong></td>
-                                        <td>{vehicle.attributes.hasHelmetBox == true ? <>Ja</> : <>Nein</>}</td>
+                                        <td>{vehicle.hasHelmetBox == true ? <>Ja</> : <>Nein</>}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Helm:</strong></td>
-                                        <td>{vehicle.attributes.hasHelmet == true ? <>Ja</> : <>Nein</>}</td>
+                                        <td>{vehicle.hasHelmet == true ? <>Ja</> : <>Nein</>}</td>
                                     </tr>
-                                    <tr>
-                                        <td><strong>Verlauf:</strong></td>
-                                        <td><Link href={'/vehicle/' + vehicle.id}>Anzeigen</Link></td>
-                                    </tr>
-
                                 </table>
                             </Popup>
                         </Marker>
@@ -97,4 +82,4 @@ const TierMap = ({zoneId}) => {
         </Map>);
 }
 
-export default TierMap;
+export default VehicleMap;
