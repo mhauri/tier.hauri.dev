@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
-import Head from 'next/head'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import {VehicleResponse} from "@mhauri/tier-api-client"
+import {Client} from '@util/Client';
 import Default from '@layout/Default/Default';
 import ErrorPage from 'next/error'
 import VehicleMap from "@module/Map/VehicleMap";
@@ -14,9 +14,6 @@ export default function Vehicle({data}: InferGetStaticPropsType<typeof getStatic
 
   return (
       <Default>
-        <Head>
-          <title>{data[0].code} - TIER MAP</title>
-        </Head>
         {isFallback
             ? 'Loading ...'
             : <VehicleMap markers={data}/>}
@@ -30,7 +27,7 @@ export async function getStaticPaths() {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   try {
-    const res = await fetch('https://tier.api.hauri.dev/v1/vehicle/' + context.params.id)
+    const res = await fetch(Client.basePath + '/v1/vehicle/' + context.params.id)
     const data: VehicleResponse[] = await res.json()
     return res ? {
       props: {
