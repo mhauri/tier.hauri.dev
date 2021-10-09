@@ -3,7 +3,7 @@ import TierMap from "@module/Map/TierMap";
 
 const HomePage = () => {
     return (<div className={styles.content}>
-        <TierMap zone={'BERN'}/>
+        <TierMap zoneId={'BERN'}/>
     </div>);
 }
 

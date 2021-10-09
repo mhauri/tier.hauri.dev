@@ -4,15 +4,18 @@ import Map from '@module/Map/index'
 import {Client} from '@util/Client';
 import {VehicleApi, ZoneApi} from '@mhauri/tier-api-client';
 
-
-const TierMap = ({zone}) => {
+const TierMap = ({zoneId}) => {
     const [markers, setMarkers] = useState([]);
     const [zones, setZones] = useState([]);
     const [center, setCenter] = useState([]);
     const vehicleApi = new VehicleApi(Client);
     const zoneApi = new ZoneApi(Client);
+    const noParking = {color: 'red'}
+    const speedReduction = {color: 'gray', fillColor: 'orange'}
+    const noColor = {color: 'white'}
+
     const listVehicles = async function () {
-        vehicleApi.listVehicle(zone, function(error, data): void {
+        vehicleApi.listVehicle(zoneId, function (error, data): void {
             if (error) {
                 //console.error(error);
             } else {
@@ -22,7 +25,7 @@ const TierMap = ({zone}) => {
     }
 
     const listZones = async function () {
-        zoneApi.listZone(zone, function(error, data): void {
+        zoneApi.listZone(zoneId, function (error, data): void {
             if (error) {
                 //console.error(error);
             } else {
@@ -32,21 +35,22 @@ const TierMap = ({zone}) => {
         });
     }
 
-    if(center.length === 0) {
+    if (center.length === 0) {
         listZones();
         listVehicles();
         return (<></>)
     }
     return (
         <Map className={styles.map} center={center} zoom={14}>
-            {({TileLayer, Marker, Popup}) => (
+            {({TileLayer, Marker, Popup, Polygon}) => (
                 <>
                     <TileLayer
                         url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
                         attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     />
                     {markers.map((vehicle, idx) =>
-                        <Marker key={`marker-${idx}`} position={[vehicle.attributes.latitude,vehicle.attributes.longitude]}>
+                        <Marker key={`marker-${idx}`}
+                                position={[vehicle.attributes.latitude, vehicle.attributes.longitude]}>
                             <Popup>
                                 <table>
                                     <tr>
@@ -72,6 +76,13 @@ const TierMap = ({zone}) => {
                                 </table>
                             </Popup>
                         </Marker>
+                    )}
+                    {zones.map((zone, idx) =>
+                        zone.attributes.zoneConstraints.length === 0 ?
+                        <Polygon key={`zone-${idx}`} positions={zone.attributes.polygon} pathOptions={noColor}/>
+                            : zone.attributes.zoneConstraints.includes('speedReduction') ? <Polygon key={`zone-${idx}`} positions={zone.attributes.polygon} pathOptions={speedReduction}/>
+                            : <Polygon key={`zone-${idx}`} positions={zone.attributes.polygon} pathOptions={noParking}/>
+
                     )}
                 </>
             )}
