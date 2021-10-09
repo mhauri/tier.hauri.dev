@@ -17,7 +17,7 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
-    "@mhauri/tier-api-client": "0.1.1",
+    "@mhauri/tier-api-client": "0.1.4",
     "autoprefixer": "^10.3.4",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",

@@ -693,10 +693,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@mhauri/tier-api-client@0.1.1":
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@mhauri/tier-api-client/0.1.1/e57d44a5382d5a977b2e0f9f09fd65e633b9cc7b92bf3ab5681bf0b283e21893#245ef1452f9bc28c7bebe488e0c74fdf0dea1738"
-  integrity sha512-HrG9lSilAVef1aEiB3N84O3RpaQBCh+zab/rx8gK5jdYJJ/WjxQTll0gq8TnWY5NA1DoHfAVHlndd9a37T8Q5w==
+"@mhauri/tier-api-client@0.1.4":
+  version "0.1.4"
+  resolved "https://npm.pkg.github.com/download/@mhauri/tier-api-client/0.1.4/a12bba2590c24551d90de39351026e2fbdddad84685a206720f1f923765bb9bc#ca9437b79477e6af0adeb7a78618ed7c7e2e2b2d"
+  integrity sha512-UHypo0SUvSF+2WciiYYJzlbqRBupWfvYjze47U1xQcuhWDbrHXwphqUXCPSK/LdmaZQIIcV0Shbp47zQmUZCGg==
   dependencies:
     "@babel/cli" "^7.0.0"
     superagent "^5.3.0"
